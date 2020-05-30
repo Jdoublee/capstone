@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 
+from .forms import UserForm
 from .my_function import *
 
 
@@ -43,3 +44,18 @@ def save(request):
 
         # ------------------모델 불러와서 저장
     return redirect('sg:index')
+
+def signup(request):
+    if request.method == "POST":
+        form = UserForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit = False)
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            return render(request, 'sg/index.html', {})
+        else:
+            return HttpResponse(form.errors)
+
+    else:
+        form = UserForm()
+        return render(request, 'sg/signup.html', {'form': form})
