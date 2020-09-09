@@ -2,7 +2,6 @@ import torch
 import re
 import sys
 
-
 #from gptko.kogpt2.pytorch_kogpt2 import get_pytorch_kogpt2_model
 from kogpt2.pytorch_kogpt2 import get_pytorch_kogpt2_model
 
@@ -13,16 +12,12 @@ from kogpt2.utils import get_tokenizer
 
 import os
 
-
 import gluonnlp as nlp
-
 
 tok_path = get_tokenizer()
 tok = SentencepieceTokenizer(tok_path)
 model, vocab = get_pytorch_kogpt2_model()
 # ~문장 생성 속도 최적화(2020_05_07_12:00)
-
-
 
 
 def generate_text(text):
@@ -63,7 +58,7 @@ def generate_3rd(text):
     ] + vocab[toked]).unsqueeze(0)
 
     outputs = model.generate(input_ids=input_ids,
-                             max_length=50,
+                             max_length=500,
                              repetition_penalty=1.2,
                              do_sample=True,
                              eos_token_ids=-1,

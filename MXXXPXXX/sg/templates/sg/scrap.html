@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html>
+{% load static %}
 
 <head>
   <meta charset="utf-8">
   <title>MINE POST</title>
   <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"> -->
+  <link rel="stylesheet" type="text/css" href="{% static 'sg/style.css' %}">
   <link rel="stylesheet" type="text/css" href="../../static/sg/style.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
   <link rel="shortcut icon" href="../../../../favicon.ico">
+
+  <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="../../static/sg/script.js"></script>
 </head>
 
 <body>
@@ -23,10 +30,10 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{% url 'sg:index' %}">
           <img id="logo_image" alt="Home" src="{% static 'sg/images/logo_image.png' %}">
         </a>
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{% url 'sg:index' %}">
           <img id="logo_text" alt="Home" src="{% static 'sg/images/logo_text.png' %}">
         </a>
       </div>
@@ -39,8 +46,18 @@
             </div>
             <button type="submit" class="btn btn-primary">검색</button>
           </form>
-          <button type="button" class="btn btn-primary navbar-btn">로그인</button>
-          <button type="button" class="btn btn-primary navbar-btn">회원가입</button>
+          {% if user.is_authenticated %}
+          <!-- 로그인한 경우 -->
+          <button type="button" class="btn btn-success navbar-btn"
+            onclick="location.href='{% url 'sg:writing' %}'">글쓰기</button>
+          <button type="button" class="btn btn-primary navbar-btn"
+            onclick="location.href='{% url 'sg:logout' %}'">로그아웃</button>
+          {% else %}
+          <button type="button" class="btn btn-primary navbar-btn"
+            onclick="location.href='{% url 'sg:login' %}'">로그인</button>
+          {% endif %}
+          <button type="button" class="btn btn-primary navbar-btn"
+            onclick="location.href='{% url 'sg:signup' %}'">회원가입</button>
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -53,49 +70,23 @@
       <div class="navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle mid_cat1" data-toggle="dropdown" role="button" aria-expanded="false">정치
-              <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">청와대</a></li>
-              <li><a href="#">북한</a></li>
-              <li><a href="#">국회/정당</a></li>
-              <li><a href="#">행정</a></li>
-            </ul>
+            <a href="{% url 'sg:list' %}?cat=정치&page=1" class="mid_cat1" role="button">정치</a>
           </li>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle mid_cat1" data-toggle="dropdown" role="button" aria-expanded="false">사회
-              <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">사건사고</a></li>
-              <li><a href="#">지역</a></li>
-              <li><a href="#">노동</a></li>
-              <li><a href="#">교육</a></li>
-            </ul>
+            <a href="{% url 'sg:list' %}?cat=사회&page=1" class=" mid_cat1" role="button">사회</a>
           </li>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle mid_cat1" data-toggle="dropdown" role="button"
-              aria-expanded="false">IT/과학 <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">통신</a></li>
-              <li><a href="#">모바일</a></li>
-              <li><a href="#">보안/해킹</a></li>
-              <li><a href="#">과학 일반</a></li>
-            </ul>
+            <a href="{% url 'sg:list' %}?cat=IT/과학&page=1" class=" mid_cat1" role="button">IT/과학</a>
           </li>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle mid_cat1" data-toggle="dropdown" role="button"
-              aria-expanded="false">문화/예술 <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">여행/레저</a></li>
-              <li><a href="#">패션/뷰티</a></li>
-              <li><a href="#">날씨</a></li>
-              <li><a href="#">음식/맛집</a></li>
-            </ul>
+            <a href="{% url 'sg:list' %}?cat=문화/예술&page=1" class=" mid_cat1" role="button">문화/예술</a>
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#" class="mid_cat2">글쓰기 놀이터</a></li>
-          <li><a href="#" class="mid_cat2">GPT-2 체험</a></li>
+          <!-- <li><a href="{% url 'sg:writing' %}" class="mid_cat2">글쓰기 놀이터</a></li>
+          <li><a href="#" class="mid_cat2">GPT-2 체험</a></li> -->
+          <!-- <li><a href="{% url 'sg:writing' %}" class="mid_cat2">글쓰기 놀이터</a></li>
+          <li><a href="#" class="mid_cat2">GPT-2 체험</a></li> -->
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -112,23 +103,30 @@
         <thead>
           <tr>
             <th></th>
-            <th>번호</th>
+            <th>카테고리</th>
             <th>제목</th>
             <th>작성자</th>
             <th>날짜</th>
-            <th>조회수</th>
+            <th>스크랩수</th>
           </tr>
         </thead>
 
         <tbody class="bot_line">
+          {% for scrap in scraps %}
+          {% if scrap.user_info != user.userid %}
+          <!-- continue -->
+          {% else %}
           <tr>
             <td><input type="checkbox" name="xxx" value="yyy"></td>
-            <td>1</td>
-            <td>코로나 확산 주춤해..</td>
-            <td>소석진</td>
-            <td>2020.05.22</td>
-            <td>2</td>
+            <td>{{ scrap.category }}</td>
+            <td><a href="{% url 'sg:detail' scrap.article_id %}">{{ scrap.title }}</td>
+            <td>{{ scrap.writer }}</td>
+            <td>{{ scrap.scrap_date }}</td>
+            <td>{{ scrap.scrap }}</td>
           </tr>
+          {% endif %}
+          {% endfor %}
+          <!--
           <tr>
             <td><input type="checkbox" name="xxx" value="yyy"></td>
             <td>2</td>
@@ -153,6 +151,7 @@
             <td>2020.05.22</td>
             <td>2</td>
           </tr>
+          -->
         </tbody>
 
       </table>
@@ -181,8 +180,7 @@
     </div>
   </div>
   </div>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
+
 </body>
 
 </html>

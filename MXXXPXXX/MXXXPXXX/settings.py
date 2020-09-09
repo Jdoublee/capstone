@@ -29,6 +29,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'django_extensions',
     'sg.apps.SgConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -120,7 +121,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # 이미지 업로드 위해 추가
-MEDIA_URL = 'sg/static/' #업로드할 경로
-MEDIA_ROOT = os.path.join(BASE_DIR, 'images') # 로컬디렉토리 저장 위치
+MEDIA_URL = 'sg/static/'  #업로드할 경로
+MEDIA_ROOT = os.path.join(BASE_DIR, 'images')  # 로컬디렉토리 저장 위치
 
-AUTH_USER_MODEL = 'sg.User' # User 사용 위해 추가
+AUTH_USER_MODEL = 'sg.User'  # User 사용 위해 추가

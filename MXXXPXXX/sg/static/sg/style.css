@@ -1,3 +1,9 @@
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+body {
+  font-family: "Noto Sans KR", sans-serif !important;
+}
+
 /* 메인페이지 */
 .container-non-responsive {
   margin-left: auto;
@@ -77,28 +83,28 @@ ul li {
   font-weight: bold;
 }
 
-.sub_title {
-  font-size: 14px;
-  font-weight: bold;
-  padding-left: 20px;
-  padding-bottom: 12px;
+.main_title {
+  font-size: 18px;
+  padding-left: 10px;
+  padding-bottom: 17px;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
+  letter-spacing: -1px;
 }
 
-.main_title {
+.sub_title {
   font-size: 16px;
-  padding-left: 10px;
-  font-weight: bold;
-  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-bottom: 10px;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
+  letter-spacing: -1px;
 }
 
 .rank_title {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
 }
 
@@ -150,18 +156,47 @@ ul li {
   margin-top: 10px;
 }
 
+
+/* AI기능 특별 CSS */
+
+.ai_box {
+  background-color: #fbe7b030;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 1px 1px 3px 0px;
+}
+
+.ai_title {
+  color: #0f4c81;
+  font-size: 18px;
+  font-weight: bold;
+  padding-left: 5px;
+  margin-top: 10px;
+}
+
+.ai_summarize {
+  color: #0f4c81;
+  font-size: 13px;
+  margin-left: 45px;
+  margin-bottom: 0px;
+  margin-top: -10px;
+}
+
 /* 2. 글쓰기페이지 */
 
-.findimg_title {
+/* .findimg_title {
   font-size: 16px;
   font-weight: bold;
-} 
+}  */
 
 .findimg {
-  width: 270px;
-  height: 180px;
-  padding-top: 15px;
-  padding-right: 5px;
+  width: 290px;
+  height: 190px;
+  border: 1px solid gray;
+  margin-top: 20px;
+  margin-left: 10px;
+  border-radius: 5px;
+  margin-right: 5px;
 }
 
 .btn_center {
@@ -175,10 +210,10 @@ ul li {
 
 .ccheck {
   float: left;
-  padding-left: 35px;
+  padding-left: 5px;
 }
 
-.ccheck input[type="checkbox"] {
+.ccheck input[type="radio"] {
 	display:none;
 }
 
@@ -187,19 +222,39 @@ ul li {
 	height:20px;
 }
 
-.ccheck input[type="checkbox"] + label .chk_img {
-  padding:0 0 0 30px;
-  width: 120px;
-  height:120px;
-  border: 1px solid #ccc;
+.ccheck input[type="radio"] + label .chk_img {
+  padding:0 0 0 5px;
+  font-size: 18px;
+  color: #0f4c81;
+  width: 100px;
+  height:100px;
+  border: 1px solid #999;
   border-radius: .25em; 
-  background:url("../../static/sg/images/thumbnail.jpg")no-repeat;
-  filter: grayscale(100%);
-	cursor:pointer;
+  background-size: 100%;
+  cursor:pointer;
+  filter: contrast(120%)
 }
-.ccheck input[type="checkbox"]:checked + label .chk_img {
-  background:url("../../static/sg/images/thumbnail.jpg")no-repeat;
-  filter: opacity(100%);
+.ccheck input[type="radio"]:checked + label .chk_img {
+  border: 2px solid #dd1e2f;
+  background-size: 100%;
+  filter: contrast(100%)
+}
+
+.mm_1 {
+  background:url("/static/sg/images/news.png")no-repeat;
+}
+
+.mm_2 {
+  background:url("/static/sg/images/author.png")no-repeat;
+}
+.mm_3 {
+  background:url("/static/sg/images/sns.png")no-repeat;
+}
+.mm_4 {
+  background:url("/static/sg/images/busker.png")no-repeat;
+}
+.mm_5 {
+  background:url("/static/sg/images/logo_image.png")no-repeat;
 }
 
 /* 3. 카테고리 */
@@ -290,7 +345,7 @@ ul li {
 .writing_title {
   padding-top: 20px;
   padding-bottom: 5px;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: bold;
 }
 
@@ -327,6 +382,9 @@ ul li {
   border-radius: .25em; 
 }
 
+.cat_radio {
+  padding-left: 15px;
+}
 /* 6. 뉴스 디테일 */
 
 .detail_title {
@@ -339,35 +397,29 @@ ul li {
 .detail_subtitle {
   font-size: 12px;
   text-align: right;
-  font-family: "Helvetica Neue",Arial,Tahoma,Sans-serif;
   color: #888;
   margin-left: -40px;
 }
 
 .detail_img {
   display: block; 
-  margin: 0px auto;
   margin-top: 50px;
   margin-bottom: 50px;
+  margin-left: 0px;
+  margin-right: 0px;
   padding: 0px;
+  width: 100%;
 }
 
 .detail_content {
   font-size: 17px;
   padding-bottom: 30px;
   margin-bottom: 30px;
-}
-
-.title_summarize {
-  font-size: 18px;
-  font-weight: bold;
-  margin-top: 30px;
+  line-height: 170%;
 }
 
 .li_summarize {
-  list-style: disc;
-  font-size: 16px;
-  margin-left: -20px;
-  margin-bottom: 5px;
-  margin-top: 15px;
+  margin-left: -35px;
+  margin-top: 20px;
+  font-size: 14px;
 }

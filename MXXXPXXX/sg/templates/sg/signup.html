@@ -1,148 +1,140 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-  <meta charset="utf-8">
-  <title>MINE POST</title>
-  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"> -->
-  <link rel="stylesheet" type="text/css" href="../../static/sg/style.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-  <link rel="shortcut icon" href="../../../../favicon.ico">
-</head>
-<!-- 스태틱 파일 불러오는 템플릿 언어 -->
-{% load static %}
-
-<body>
-  <!--헤더 (2중 구조)-->
-  <!--top 헤더 - 로고, 로그인, 회원가입-->
-  <nav class="navbar navbar-custom navbar-static-top" id="navbar_top">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-          data-target="#bs-example-navbar-collapse-1">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#">
-          <img id="logo_image" alt="Home" src="{% static 'sg/images/logo_image.png' %}">
-        </a>
-        <a class="navbar-brand" href="#">
-          <img id="logo_text" alt="Home" src="{% static 'sg/images/logo_text.png' %}">
-        </a>
-      </div>
-
-      <div class="navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav navbar-right">
-          <form class="navbar-form navbar-left" role="search">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="">
+    {% load static %}
+    
+    <head>
+        <meta charset="utf-8">
+            <title>MINE POST</title>
+            <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"> -->
+            <link rel="stylesheet" type="text/css" href="{% static 'sg/style.css' %}">
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
+                    <link rel="shortcut icon" href="../../../../favicon.ico">
+                        
+                        <script src="//code.jquery.com/jquery.min.js"></script>
+                        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+                        <script src="../../static/sg/script.js"></script>
+    </head>
+    <!-- 스태틱 파일 불러오는 템플릿 언어 -->
+    
+    <body>
+        <!--헤더 (2중 구조)-->
+        <!--top 헤더 - 로고, 로그인, 회원가입-->
+        <nav class="navbar navbar-custom navbar-static-top" id="navbar_top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{% url 'sg:index' %}">
+                        <img id="logo_image" alt="Home" src="{% static 'sg/images/logo_image.png' %}">
+                            </a>
+                    <a class="navbar-brand" href="{% url 'sg:index' %}">
+                        <img id="logo_text" alt="Home" src="{% static 'sg/images/logo_text.png' %}">
+                            </a>
+                </div>
+                
+                <div class="navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <form class="navbar-form navbar-left" role="search">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="">
+                                    </div>
+                            <button type="submit" class="btn btn-primary">검색</button>
+                        </form>
+                        {% if user.is_authenticated %}
+                        <!-- 로그인한 경우 -->
+                        <button type="button" class="btn btn-success navbar-btn"
+                            onclick="location.href='{% url 'sg:writing' %}'">글쓰기</button>
+                        <button type="button" class="btn btn-primary navbar-btn"
+                            onclick="location.href='{% url 'sg:logout' %}'">로그아웃</button>
+                        {% else %}
+                        <button type="button" class="btn btn-primary navbar-btn"
+                            onclick="location.href='{% url 'sg:login' %}'">로그인</button>
+                        {% endif %}
+                        <button type="button" class="btn btn-primary navbar-btn"
+                            onclick="location.href='{% url 'sg:signup' %}'">회원가입</button>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+        
+        
+        <!--mid 헤더 - 카테고리(드롭다운식)-->
+        <nav class="navbar-custom navbar-static-top bot_line_nopad" id="navbar_mid">
+            <div class="container">
+                <div class="navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="{% url 'sg:list' %}?cat=정치&page=1" class="mid_cat1" role="button">정치</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="{% url 'sg:list' %}?cat=사회&page=1" class=" mid_cat1" role="button">사회</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="{% url 'sg:list' %}?cat=IT/과학&page=1" class=" mid_cat1" role="button">IT/과학</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="{% url 'sg:list' %}?cat=문화/예술&page=1" class=" mid_cat1" role="button">문화/예술</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <!-- <li><a href="{% url 'sg:writing' %}" class="mid_cat2">글쓰기 놀이터</a></li>
+                         <li><a href="#" class="mid_cat2">GPT-2 체험</a></li> -->
+                        <!-- <li><a href="{% url 'sg:writing' %}" class="mid_cat2">글쓰기 놀이터</a></li>
+                         <li><a href="#" class="mid_cat2">GPT-2 체험</a></li> -->
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+        
+        <!--몸통부 - 좌)메인뉴스 우)랭킹 -->
+        <div class="container-non-responsive">
+            <div class="row">
+                <div class="col-xs-4"></div>
+                
+                <form method="post" action="">
+                    {% csrf_token %}
+                    
+                    <div class="col-xs-4">
+                        <br><br>
+                        <div class="form-group">
+                            <label for="id">아이디</label>
+                            <input type="id" id="id" name="userid" placeholder="아이디" class="form-control"
+                                value="{{ form.userid.value|default_if_none:'' }}">
+                                </div>
+                        
+                        <div class="form-group">
+                            <label for="password">패스워드</label>
+                            <input type="password" id="password" name="password" placeholder="패스워드" class="form-control"
+                            value="{{ form.password.value|default_if_none:'' }}" />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password">닉네임</label>
+                            <input type="text" id="nickname" name="name" placeholder="닉네임" class="form-control"
+                            value="{{ form.name.value|default_if_none:'' }}" />
+                        </div>
+                        
+                        <div class="form-group cat_bot_line">
+                            <label for="password">E-Mail</label>
+                            <input type="text" id="email" name="email" placeholder="E-Mail" class="form-control"
+                            value="{{ form.email.value|default_if_none:'' }}" />
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block">회원가입</button>
+                        </div>
+                    </div>
+                    
+                </form>
+                <div class="col-xs-4"></div>
             </div>
-            <button type="submit" class="btn btn-primary">검색</button>
-          </form>
-          <button type="button" class="btn btn-primary navbar-btn">로그인</button>
-          <button type="button" class="btn btn-primary navbar-btn">회원가입</button>
-        </ul>
-      </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-  </nav>
-
-
-  <!--mid 헤더 - 카테고리(드롭다운식)-->
-  <nav class="navbar-custom navbar-static-top bot_line_nopad" id="navbar_mid">
-    <div class="container">
-      <div class="navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav">
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle mid_cat1" data-toggle="dropdown" role="button" aria-expanded="false">정치
-              <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">청와대</a></li>
-              <li><a href="#">북한</a></li>
-              <li><a href="#">국회/정당</a></li>
-              <li><a href="#">행정</a></li>
-            </ul>
-          </li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle mid_cat1" data-toggle="dropdown" role="button" aria-expanded="false">사회
-              <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">사건사고</a></li>
-              <li><a href="#">지역</a></li>
-              <li><a href="#">노동</a></li>
-              <li><a href="#">교육</a></li>
-            </ul>
-          </li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle mid_cat1" data-toggle="dropdown" role="button"
-              aria-expanded="false">IT/과학 <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">통신</a></li>
-              <li><a href="#">모바일</a></li>
-              <li><a href="#">보안/해킹</a></li>
-              <li><a href="#">과학 일반</a></li>
-            </ul>
-          </li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle mid_cat1" data-toggle="dropdown" role="button"
-              aria-expanded="false">문화/예술 <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">여행/레저</a></li>
-              <li><a href="#">패션/뷰티</a></li>
-              <li><a href="#">날씨</a></li>
-              <li><a href="#">음식/맛집</a></li>
-            </ul>
-          </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="#" class="mid_cat2">글쓰기 놀이터</a></li>
-          <li><a href="#" class="mid_cat2">GPT-2 체험</a></li>
-        </ul>
-      </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-  </nav>
-
-  <!--몸통부 - 좌)메인뉴스 우)랭킹 -->
-  <div class="container-non-responsive">
-    <div class="row">
-      <div class="col-xs-4"></div>
-
-      <form method="post" action="">
-      {% csrf_token %}
-      
-      <div class="col-xs-4">
-        <br><br>
-        <div class="form-group">
-          <label for="id">아이디</label>
-          <input type="id" id="id" placeholder="아이디" class="form-control" value="{{ form.userid }}" />
         </div>
-
-        <div class="form-group">
-          <label for="password">패스워드</label>
-          <input type="password" id="password" placeholder="패스워드" class="form-control" value="{{ form.password }}"/>
-        </div>
-
-        <div class="form-group">
-          <label for="password">닉네임</label>
-          <input type="text" id="nickname" placeholder="닉네임" class="form-control" value="{{ form.name }}"/>
-        </div>
-
-        <div class="form-group cat_bot_line">
-          <label for="password">E-Mail</label>
-          <input type="text" id="email" placeholder="E-Mail" class="form-control" value="{{ form.email }}"/>
-        </div>
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary btn-block">회원가입</button>
-        </div>
-      </div>
-      
-      </form>
-      <div class="col-xs-4"></div>
-    </div>
-  </div>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-</body>
-
+        
+    </body>
+    
 </html>

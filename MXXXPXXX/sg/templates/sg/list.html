@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+
+<head>
+  <meta charset="utf-8">
+  <title>MINE POST</title>
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"> -->
+  <link rel="stylesheet" type="text/css" href="{% static 'sg/style.css' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
+  <link rel="shortcut icon" href="../../../../favicon.ico">
+
+  <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="../../static/sg/script.js"></script>
+</head>
+
+<body>
+  <!--헤더 (2중 구조)-->
+  <!--top 헤더 - 로고, 로그인, 회원가입-->
+  <nav class="navbar navbar-custom navbar-static-top" id="navbar_top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+          data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{% url 'sg:index' %}">
+          <img id="logo_image" alt="Home" src="{% static 'sg/images/logo_image.png' %}">
+        </a>
+        <a class="navbar-brand" href="{% url 'sg:index' %}">
+          <img id="logo_text" alt="Home" src="{% static 'sg/images/logo_text.png' %}">
+        </a>
+      </div>
+
+      <div class="navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="">
+            </div>
+            <button type="submit" class="btn btn-primary">검색</button>
+          </form>
+          {% if user.is_authenticated %}
+          <!-- 로그인한 경우 -->
+          <button type="button" class="btn btn-success navbar-btn"
+            onclick="location.href='{% url 'sg:writing' %}'">글쓰기</button>
+          <button type="button" class="btn btn-primary navbar-btn"
+            onclick="location.href='{% url 'sg:logout' %}'">로그아웃</button>
+          {% else %}
+          <button type="button" class="btn btn-primary navbar-btn"
+            onclick="location.href='{% url 'sg:login' %}'">로그인</button>
+          {% endif %}
+          <button type="button" class="btn btn-primary navbar-btn"
+            onclick="location.href='{% url 'sg:signup' %}'">회원가입</button>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+
+
+  <!--mid 헤더 - 카테고리(드롭다운식)-->
+  <nav class="navbar-custom navbar-static-top bot_line_nopad" id="navbar_mid">
+    <div class="container">
+      <div class="navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a href="{% url 'sg:list' %}?cat=정치&page=1" class="mid_cat1" role="button">정치</a>
+          </li>
+          <li class="dropdown">
+            <a href="{% url 'sg:list' %}?cat=사회&page=1" class=" mid_cat1" role="button">사회</a>
+          </li>
+          <li class="dropdown">
+            <a href="{% url 'sg:list' %}?cat=IT/과학&page=1" class=" mid_cat1" role="button">IT/과학</a>
+          </li>
+          <li class="dropdown">
+            <a href="{% url 'sg:list' %}?cat=문화/예술&page=1" class=" mid_cat1" role="button">문화/예술</a>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <!-- <li><a href="{% url 'sg:writing' %}" class="mid_cat2">글쓰기 놀이터</a></li>
+          <li><a href="#" class="mid_cat2">GPT-2 체험</a></li> -->
+          <!-- <li><a href="{% url 'sg:writing' %}" class="mid_cat2">글쓰기 놀이터</a></li>
+          <li><a href="#" class="mid_cat2">GPT-2 체험</a></li> -->
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+
+  <!--몸통부 - 좌)메인뉴스 우)랭킹 -->
+  <div class="container-non-responsive">
+    <div class="row">
+      <div class="col-xs-9 right_line">
+        <div class="col-xs-2">
+          <h1 class="cat_title bot_line">{{ cat }}</h1>
+        </div>
+        <div class="col-xs-10 left_line">
+
+          {% if hot_article %}
+          <div class="col-xs-12 cat_bot_line no_pad">
+            <h1 class="head_title">{{ cat }} 핫이슈</h1>
+            <div class="col-xs-6">
+              <img class="cat_headline_img" alt="Headline_img" src="{{ hot_article.photo }}">
+            </div>
+            <div class="col-xs-6 no_pad">
+              <ul>
+                <li class="cat_headline_title"><a href="{% url 'sg:detail' hot_article.id %}">{{ hot_article.title}}</a>
+                </li>
+                <li class="cat_headline_text">{{ hot_article.text }}</li>
+                <li class="cat_author">{{ hot_article.writer }}</li>
+              </ul>
+            </div>
+          </div>
+          {% endif %}
+
+          {% for article in articles %}
+          <div class="col-xs-12 cat_bot_line no_pad">
+            <div class="col-xs-2">
+              <img class="cat_normal_img" alt="Headline_img" src="{{ article.photo }}">
+            </div>
+            <div class="col-xs-10 no_pad">
+              <ul>
+                <li class="cat_normal_title"><a href="{% url 'sg:detail' article.id %}">{{ article.title }}</a></li>
+                <li class="cat_normal_text">{{ article.text }}</li>
+                <li class="cat_author">{{ article.writer }}</li>
+              </ul>
+            </div>
+          </div>
+          {% endfor %}
+
+          <nav class="text-center">
+            <ul class="pagination">
+              {% if page == 1 %}
+              <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+              {% else %}
+              <li class="active"><a href="{% url 'sg:list' %}?cat={{ cat }}&page={{ page|add:'-1' }}"
+                  aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+              {% endif %}
+              {% for num in range %}
+              {% if num == page %}
+              <li class="active"><a href="{% url 'sg:list' %}?cat={{ cat }}&page={{ num }}">{{ num }}<span
+                    class="sr-only">(current)</span></a></li>
+              {% else %}
+              <li><a href="{% url 'sg:list' %}?cat={{ cat }}&page={{ num }}">{{ num }}</a></li>
+              {% endif %}
+              {% endfor %}
+              {% if page == last_page %}
+              <li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+              {% else %}
+              <li class="active"><a href="{% url 'sg:list' %}?cat={{ cat }}&page={{ page|add:'1' }}"
+                  aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+              {% endif %}
+            </ul>
+          </nav>
+
+        </div>
+      </div>
+
+      <div class="col-xs-3">
+        <h1 class="rank_title bot_line">투데이 랭킹</h1>
+        <!-- <div class="row">
+          <ul class="nav navbar-nav">
+            <li class="rank_padding">정치</li>
+            <li class="rank_padding">사회</li>
+            <li class="rank_padding">IT/과학</li>
+            <li class="rank_padding">문화/예술</li>
+          </ul>
+        </div> -->
+        <ul class="nav">
+          {% for article in headline %}
+          <a href="{% url 'sg:detail' article.id %}">
+            <li class="rank_text">{{ forloop.counter }}. {{ article.title }}</li>
+          </a>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

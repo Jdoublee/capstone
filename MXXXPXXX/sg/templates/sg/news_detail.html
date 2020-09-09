@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html>
+{% load static %}
 
 <head>
   <meta charset="utf-8">
   <title>MINE POST</title>
   <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"> -->
+  <link rel="stylesheet" type="text/css" href="{% static 'sg/style.css' %}">
   <link rel="stylesheet" type="text/css" href="../../static/sg/style.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
   <link rel="shortcut icon" href="../../../../favicon.ico">
+
+  <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="../../static/sg/script.js"></script>
 </head>
 
 <body>
@@ -23,10 +30,10 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{% url 'sg:index' %}">
           <img id="logo_image" alt="Home" src="{% static 'sg/images/logo_image.png' %}">
         </a>
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{% url 'sg:index' %}">
           <img id="logo_text" alt="Home" src="{% static 'sg/images/logo_text.png' %}">
         </a>
       </div>
@@ -39,8 +46,18 @@
             </div>
             <button type="submit" class="btn btn-primary">검색</button>
           </form>
-          <button type="button" class="btn btn-primary navbar-btn">로그인</button>
-          <button type="button" class="btn btn-primary navbar-btn">회원가입</button>
+          {% if user.is_authenticated %}
+          <!-- 로그인한 경우 -->
+          <button type="button" class="btn btn-success navbar-btn"
+            onclick="location.href='{% url 'sg:writing' %}'">글쓰기</button>
+          <button type="button" class="btn btn-primary navbar-btn"
+            onclick="location.href='{% url 'sg:logout' %}'">로그아웃</button>
+          {% else %}
+          <button type="button" class="btn btn-primary navbar-btn"
+            onclick="location.href='{% url 'sg:login' %}'">로그인</button>
+          {% endif %}
+          <button type="button" class="btn btn-primary navbar-btn"
+            onclick="location.href='{% url 'sg:signup' %}'">회원가입</button>
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -53,49 +70,23 @@
       <div class="navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle mid_cat1" data-toggle="dropdown" role="button" aria-expanded="false">정치
-              <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">청와대</a></li>
-              <li><a href="#">북한</a></li>
-              <li><a href="#">국회/정당</a></li>
-              <li><a href="#">행정</a></li>
-            </ul>
+            <a href="{% url 'sg:list' %}?cat=정치&page=1" class="mid_cat1" role="button">정치</a>
           </li>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle mid_cat1" data-toggle="dropdown" role="button" aria-expanded="false">사회
-              <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">사건사고</a></li>
-              <li><a href="#">지역</a></li>
-              <li><a href="#">노동</a></li>
-              <li><a href="#">교육</a></li>
-            </ul>
+            <a href="{% url 'sg:list' %}?cat=사회&page=1" class=" mid_cat1" role="button">사회</a>
           </li>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle mid_cat1" data-toggle="dropdown" role="button"
-              aria-expanded="false">IT/과학 <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">통신</a></li>
-              <li><a href="#">모바일</a></li>
-              <li><a href="#">보안/해킹</a></li>
-              <li><a href="#">과학 일반</a></li>
-            </ul>
+            <a href="{% url 'sg:list' %}?cat=IT/과학&page=1" class=" mid_cat1" role="button">IT/과학</a>
           </li>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle mid_cat1" data-toggle="dropdown" role="button"
-              aria-expanded="false">문화/예술 <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">여행/레저</a></li>
-              <li><a href="#">패션/뷰티</a></li>
-              <li><a href="#">날씨</a></li>
-              <li><a href="#">음식/맛집</a></li>
-            </ul>
+            <a href="{% url 'sg:list' %}?cat=문화/예술&page=1" class=" mid_cat1" role="button">문화/예술</a>
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#" class="mid_cat2">글쓰기 놀이터</a></li>
-          <li><a href="#" class="mid_cat2">GPT-2 체험</a></li>
+          <!-- <li><a href="{% url 'sg:writing' %}" class="mid_cat2">글쓰기 놀이터</a></li>
+          <li><a href="#" class="mid_cat2">GPT-2 체험</a></li> -->
+          <!-- <li><a href="{% url 'sg:writing' %}" class="mid_cat2">글쓰기 놀이터</a></li>
+          <li><a href="#" class="mid_cat2">GPT-2 체험</a></li> -->
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -107,61 +98,44 @@
       <div class="col-xs-9 right_line">
 
         <div class="col-xs-2">
-          <h1 class="cat_title bot_line">문화/예술</h1>
-          <ul class="ul_margin">
-            <a href="#">
-              <li class="cat_text">정치</li>
-            </a>
-            <a href="#">
-              <li class="cat_text">이슈</li>
-            </a>
-            <a href="#">
-              <li class="cat_text">국제</li>
-            </a>
-            <a href="#">
-              <li class="cat_text">카테고리</li>
-            </a>
-            <a href="#">
-              <li class="cat_text">카테고리</li>
-            </a>
-          </ul>
+          <h1 class="cat_title bot_line">사회</h1>
         </div>
 
         <div class="col-xs-10 left_line">
-          <h1 class="detail_title">월 소득 격차 더 벌어졌다… 상위 20% 1115만원, 6.3% 증가…하위 20% 149만원 ‘제자리’</h1>
+          <h1 class="detail_title">{{ article.title }}</h1>
 
-          <div class="col-xs-2 bot_line">
-            <button class="btn btn-default">스크랩</button>
-          </div>
+          <form action="" method="POST">
+            {% csrf_token %}
+            <div class="col-xs-2 bot_line">
+              <input type="hidden" name="article_id" value="{{article.id}}">
+              <input type="hidden" name="user_id" value="{{user.userid}}">
+              <button class="btn btn-default" formaction="{% url 'sg:scrap' %}">스크랩</button>
+            </div>
+          </form>
 
           <div class="col-xs-10 bot_line_nopad">
             <ul>
-              <li class="detail_subtitle">2020. 05. 22 오후 12:03</li>
-              <li class="detail_subtitle">소석진 seokzin@naver.com</li>
+              <li class="detail_subtitle">{{ article.pub_date }}</li>
+              <li class="detail_subtitle">{{ article.writer }}</li>
             </ul>
           </div>
 
           <div class="col-xs-12">
-            <h1 class="title_summarize">요약봇</h1>
-            <ul class="">
-              <li class="li_summarize">1분위 가구 소득은 2018년 1분기(-8.0%)부터 지난해 1분기(-2.5%)까지 연속 감소하다 지난해 2분기(0.04%)부터 증가세로 전환했다
-              </li>
-              <li class="li_summarize">1분위 가구의 근로소득은 51만3000원으로 1년 전보다 3.3% 감소했다</li>
-              <li class="li_summarize">코로나19 여파로 고용 취약계층인 임시·일용직 중심으로 취업자 감소세가 확대되면서 근로소득이 쪼그라들었다</li>
-            </ul>
+            <br>
+            <div class="ai_box">
+              <h1 class="ai_title"><i class="fas fa-robot fa-lg"></i>&nbsp;&nbsp;요약 봇</h1>
+              <p class="ai_summarize">인공지능이 3줄 요약한 기사입니다.</p>
+              <ul class="">
+                <li class="li_summarize">1분위 가구 소득은 2018년 1분기(-8.0%)부터 지난해 1분기(-2.5%)까지 연속 감소하다 지난해 2분기(0.04%)부터 증가세로
+                  전환했다</li>
+                <li class="li_summarize">1분위 가구의 근로소득은 51만3000원으로 1년 전보다 3.3% 감소했다</li>
+                <li class="li_summarize">코로나19 여파로 고용 취약계층인 임시·일용직 중심으로 취업자 감소세가 확대되면서 근로소득이 쪼그라들었다</li>
+              </ul>
+            </div>
 
-            <img class="detail_img" alt="Headline_img" src="../../static/sg/images/thumbnail.jpg">
+            <img class="detail_img" alt="Headline_img" src="{{ article.photo }}">
             <p class="detail_content bot_line">
-              코로나19 여파로 올해 1분기 임시·일용직 등 고용 취약계층이 직격탄을 맞으면서 저소득자와 고소득자 간 소득 격차가 1년 전보다 더 벌어진 것으로 나타났다.
-              <br><br>
-              21일 통계청이 발표한 올해 1분기 가계동향조사 결과를 보면 지난 1~3월 1분위(소득 하위 20%) 가구 소득은 월평균 149만8000원으로 1년 전과 동일했다. 1분위 가구 소득은
-              2018년 1분기(-8.0%)부터 지난해 1분기(-2.5%)까지 연속 감소하다 지난해 2분기(0.04%)부터 증가세로 전환했다. 이후 지난해 4분기(6.9%) 큰 폭의 증가세를 보였으나 올해
-              1분기까지 상승세를 이어가지 못했다.
-              <br><br>
-              1분위 가구의 근로소득은 51만3000원으로 1년 전보다 3.3% 감소했다. 코로나19 여파로 고용 취약계층인 임시·일용직 중심으로 취업자 감소세가 확대되면서 근로소득이 쪼그라들었다.
-              통계청의 ‘3월 고용동향’을 보면 임시·일용직 취업자는 59만3000명 감소해 1989년 집계 이후 역대 최대다. 일시휴직자는 160만7000명으로 전년 동기 대비 126만명 폭증해
-              1982년 통계 작성 이래 최대로 늘었다. 그나마 사업소득(25만7000원) 증가(6.9%)와 기초연금·사회수혜금 확대로 인한 이전소득(69만7000원) 증가(2.5%) 등 정부의
-              긴급생계지원으로 1분위 가구의 소득이 전년 수준을 유지할 수 있었다.
+              {{ article.text }}
             </p>
           </div>
 
@@ -194,52 +168,24 @@
 
       <div class="col-xs-3">
         <h1 class="rank_title bot_line">투데이 랭킹</h1>
-        <div class="row">
-          <ul class="nav navbar-nav">
-            <li class="rank_padding">정치</li>
-            <li class="rank_padding">사회</li>
-            <li class="rank_padding">IT/과학</li>
-            <li class="rank_padding">문화/예술</li>
-          </ul>
-        </div>
-        <ul class="nav top_line">
-          <br>
-          <a href="#">
-            <li class="rank_text">1. 민경욱이 흔든 투표용지 6장은 진짜"... 선관위</li>
+        <!-- <div class="row">
+                  <ul class="nav navbar-nav">
+                    <li class="rank_padding">정치</li>
+                    <li class="rank_padding">사회</li>
+                    <li class="rank_padding">IT/과학</li>
+                    <li class="rank_padding">문화/예술</li>
+                  </ul>
+                </div> -->
+        <ul class="nav">
+          {% for article in headline %}
+          <a href="{% url 'sg:detail' article.id %}">
+            <li class="rank_text">{{ forloop.counter }}. {{ article.title }}</li>
           </a>
-          <a href="#">
-            <li class="rank_text">2. 선관위 "구리서 투표용지 유출…민경욱은 입수</li>
-          </a>
-          <a href="#">
-            <li class="rank_text">3. 선관위, 경기 구리서 투표용지 유출 확인…대검에 수</li>
-          </a>
-          <a href="#">
-            <li class="rank_text">4. 민경욱이 흔든 투표용지 6장은 진짜"... 선관위</li>
-          </a>
-          <a href="#">
-            <li class="rank_text">5. 웜비어家의 집념… 김정은, 유태인 인맥 잘못 건드렸다</li>
-          </a>
-          <a href="#">
-            <li class="rank_text">6. 선관위, 경기 구리서 투표용지 유출 확인…대검에 수</li>
-          </a>
-          <a href="#">
-            <li class="rank_text">7. 문희상에 편지 쓴 할머니 "내 핏값인데, 정대협이 왜 막느냐"</li>
-          </a>
-          <a href="#">
-            <li class="rank_text">8. 코로나 발병 위험</li>
-          </a>
-          <a href="#">
-            <li class="rank_text">9. 선관위, 경기 구리서 투표용지 유출 확인…대검에 수</li>
-          </a>
-          <a href="#">
-            <li class="rank_text">10. 민경욱이 흔든 투표용지 6장은 진짜"... 선관위</li>
-          </a>
+          {% endfor %}
         </ul>
       </div>
     </div>
   </div>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
 </body>
 
 </html>
